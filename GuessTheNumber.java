@@ -9,6 +9,7 @@ public class GuessTheNumber {
 	int randomNumber, numberGuessed, max, tries;
 	int numOfAttempt = 0;
 	boolean keepTrying = true;
+	String userTryAgain;
 
 	void rangeOfNumber() {
 
@@ -101,23 +102,36 @@ public class GuessTheNumber {
 	}
 
 	void gameOver() {
-		System.out.printf("\nYou Lost! Game Over!!!  \n"
-				+ "Play Again? Enter Y/N: ");
+		keepTrying = true;
+		System.out.printf("\nYou Lost! Game Over!!!  \n" + "Play Again? Enter Y/N: ");
 		Scanner go = new Scanner(System.in);
-		String userTryAgain = go.nextLine();
-		if (userTryAgain.equalsIgnoreCase("Y")){
-			rangeOfNumber();
-			scoreBoard();
-			generateRandom();
-			userGuess();
+		while (keepTrying) {
+			try {
+				userTryAgain = go.nextLine();
+			} catch (InputMismatchException e) {
+				System.err.println("Enter only Y or N");
+				continue;
+			}
 
+			if (userTryAgain.equalsIgnoreCase("Y")) {
+				
+				numOfAttempt = 0; // reset the number of attempts
+				rangeOfNumber();
+				scoreBoard();
+				generateRandom();
+				userGuess();
+				keepTrying = false;
+				
+			} else if (userTryAgain.equalsIgnoreCase("N")) {
+				System.out.println("BYE!!!");
+				keepTrying = false;
+			} else {
+				System.out.println("Enter Y or N");
+				continue;
+			}
 		}
-		else if (userTryAgain.equalsIgnoreCase("N")){
-			System.out.println("BYE!!!");
-		}
+		
 	}
-	
-	
 
 	public static void main(String[] args) {
 
